@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Dashboard
+            </div>
+            <div id="chartNilai"></div>
+            <div class="panel-body">
+
+                <script src="assets/highcharts/highcharts.js"></script>
+                <script src="assets/highcharts/exporting.js"></script>
+                <script>
+                    var penabung = [];
+                    var tgls = [];
+
+                    function isiData(pn, tg) {
+                        penabung.push(pn);
+                        tgls.push(tg);
+                        console.log(tg);
+                    }
+                </script>
+                <?php
+                $sql = $koneksi->query("SELECT tanggal,COUNT(tanggal) 'Jumlah' FROM `detail` GROUP BY tanggal ORDER BY tanggal ASC");
+                while ($data = $sql->fetch_array()) {
+                    $pn = $data['Jumlah'];
+                    $tg = $data['tanggal'];
+                    echo ("isiData($pn,$tg);\n");
+                }
+                ?>
+                <script>
+                    function tampilGrafik(pnb, tgls) {
+
+                        // console.log(penabung);
+                        // console.log(tgls);
+
+                        Highcharts.chart('chartNilai', {
+                            chart: {
+                                type: 'area'
+                            },
+                            title: {
+                                text: 'Grafik Jumlah Penabung'
+                            },
+                            xAxis: {
+                                categories: tgls,
+                                tickmarkPlacement: 'on',
+                                title: {
+                                    enabled: false
+                                }
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Jumlah'
+                                },
+                                labels: {
+                                    formatter: function() {
+                                        return this.value;
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                split: true,
+                                valueSuffix: ' Orang'
+                            },
+                            plotOptions: {
+                                area: {
+                                    stacking: 'normal',
+                                    lineColor: '#666666',
+                                    lineWidth: 1,
+                                    marker: {
+                                        lineWidth: 1,
+                                        lineColor: '#666666'
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Koperasi ABM',
+                                data: penabung
+                            }]
+                        });
+                    }
+                </script>
+
+            </div>
+        </div>
+    </div>
+</div>
