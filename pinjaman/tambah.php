@@ -68,11 +68,14 @@ $simpan = @$_POST['simpan'];
 if ($simpan) {
     $sql = $koneksi->query("INSERT INTO pinjaman (id_anggota, jumlah_pinjaman, tanggal_pinjam, tanggal_selesai, jangka_waktu, bunga, jumlah_bayar) values('$id_anggota','$jumlah_pinjaman','$tanggal_pinjam','$tanggal_selesai','$jangka_waktu','$bunga','$jumlah_bayar')");
 
+    $hasil = $koneksi->query("SELECT email FROM anggota WHERE id = '$id_anggota'");
+    $data = mysqli_fetch_assoc($hasil);
 ?>
     <script type="text/javascript">
+        let email = '<?= $data['email']; ?>';
+        let dana = '<?= $jumlah_bayar; ?>';
+        fetch('http://siodian.my.id/pinjam/' + email + '/' + dana);
         alert("Data Berhasil Disimpan");
         window.location.href = "?page=pinjaman";
     </script>
-<?php
-}
-?>
+<?php } ?>

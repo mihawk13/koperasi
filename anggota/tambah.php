@@ -22,6 +22,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Alamat</label>
                         <input class="form-control" name="alamat" required>
                     </div>
@@ -45,21 +50,22 @@
 $no_rek = @$_POST['no_rek'];
 $nama_anggota = @$_POST['nama_anggota'];
 $telepon = @$_POST['telepon'];
+$email = @$_POST['email'];
 $alamat = @$_POST['alamat'];
 $status = @$_POST['status'];
 
 $simpan = @$_POST['simpan'];
 
 if ($simpan) {
-    $sql = $koneksi->query("insert into anggota (no_rek, nama_anggota, telepon, alamat, status) values('$no_rek','$nama_anggota','$telepon','$alamat','$status')");
+    $sql = $koneksi->query("insert into anggota (no_rek, nama_anggota, telepon, email, alamat, status) values('$no_rek','$nama_anggota','$telepon','$email','$alamat','$status')");
 
     if ($sql) {
-        ?>
+?>
         <script type="text/javascript">
             alert("Data Berhasil Disimpan");
             window.location.href = "?page=anggota";
         </script>
-    <?php
-}
+<?php
+    }
 }
 ?>

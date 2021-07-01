@@ -1,8 +1,8 @@
-<h2 style="text-align:center">KOPERASI ARTHA BHASKARA MANDIRI</h2>
-<h5 style="text-align:center">Alamat : Jalan Raya Milik Pemerintah</h5>
+<h3 style="text-align:center">LAPORAN PEMINJAMAN</h3>
+<h3 style="text-align:center">KOPERASI ARTHA BHASKARA MANDIRI</h3>
 <hr>
-<h3>Laporan Pinjaman</h3>
-<table class="table table-striped table-bordered table-hover">
+<!-- <h3>Laporan Pinjaman</h3> -->
+<table class="table table-striped table-bordered table-hover" id="dataTables-exp">
     <thead>
         <tr>
             <th style="text-align: center;">ID Pinjaman</th>

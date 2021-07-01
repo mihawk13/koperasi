@@ -18,7 +18,7 @@
 
                     <div class="form-group">
                         <label>ID Tabungan</label>
-                        <input class="form-control" name="id_tabungan" id="id_tabungan" readonly>
+                        <input class="form-control" name="id_detail" id="id_tabungan" readonly>
                     </div>
 
                     <div class="form-group">
@@ -53,7 +53,7 @@
 </div>
 
 <?php
-$id_tabungan = @$_POST['id_tabungan'];
+$id_detail = @$_POST['id_detail'];
 $tanggal = @$_POST['tanggal'];
 $id_anggota = @$_POST['id_anggota'];
 $jenis_tabungan = @$_POST['jenis_tabungan'];
@@ -62,15 +62,24 @@ $jumlah = @$_POST['jumlah'];
 $simpan = @$_POST['simpan'];
 
 if ($simpan) {
-    $sql = $koneksi->query("insert into detail (id_tabungan, tanggal, id_anggota, jenis_tabungan, jumlah) values('$id_tabungan','$tanggal','$id_anggota','$jenis_tabungan','$jumlah')");
+    // $sql = $koneksi->query("insert into detail (id_detail, tanggal, id_anggota, jenis_tabungan, jumlah) values('$id_detail','$tanggal','$id_anggota','$jenis_tabungan','$jumlah')");
 
-    if ($sql) {
+    // $hasil = $koneksi->query("SELECT email FROM anggota WHERE id = '$id_anggota'");
+    // $data = mysqli_fetch_assoc($hasil);
 ?>
-        <script type="text/javascript">
+    <script type="text/javascript">
+        let email = '<?= $data['email']; ?>';
+        let dana = '<?= $jumlah; ?>';
+        // console.log(email, dana);
+        try {
+            fetch('http://siodian.my.id/tabung/'+ email +'/' + dana).then(res => console.log(res));
             alert("Data Berhasil Disimpan");
             window.location.href = "?page=detail";
-        </script>
-<?php
-    }
-}
-?>
+        } catch (err) {
+            alert(err); // Failed to fetch
+        }
+        // fetch('http://siodian.my.id/tabung/hilmanhabibi13@gmail.com/300000').then(res => console.log(res));
+        // alert("Data Berhasil Disimpan");
+        // window.location.href = "?page=detail";
+    </script>
+<?php } ?>
