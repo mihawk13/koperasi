@@ -70,11 +70,28 @@ if ($simpan) {
 
     $hasil = $koneksi->query("SELECT email FROM anggota WHERE id = '$id_anggota'");
     $data = mysqli_fetch_assoc($hasil);
+
+    require_once './vendor/autoload.php';
+
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+        ->setUsername('sedotppk@gmail.com')
+        ->setPassword('k1ll3rb33');
+
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+    // Create a message
+    $message = (new Swift_Message('Pemberitahuan dari Artha Bhaskara Mandiri'))
+        ->setFrom(['no-reply@artha-baskara-mandiri.com' => 'Artha Bhaskara Mandiri'])
+        ->setTo($data['email'])
+        // ->setBody('<p>Peminjaman Dana<p>')
+        ->addPart('<p>Anda telah meminjam dana sebesar Rp. ' . number_format($jumlah_bayar) . '</p></br><p><strong>Artha Bhaskara Mandiri,</strong></p></br><p><strong>Terima Kasih</strong></p>', 'text/html');
+
+    // Send the message
+    $result = $mailer->send($message);
 ?>
     <script type="text/javascript">
-        let email = '<?= $data['email']; ?>';
-        let dana = '<?= $jumlah_bayar; ?>';
-        fetch('http://siodian.my.id/pinjam/' + email + '/' + dana);
         alert("Data Berhasil Disimpan");
         window.location.href = "?page=pinjaman";
     </script>

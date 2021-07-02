@@ -62,24 +62,34 @@ $jumlah = @$_POST['jumlah'];
 $simpan = @$_POST['simpan'];
 
 if ($simpan) {
-    // $sql = $koneksi->query("insert into detail (id_detail, tanggal, id_anggota, jenis_tabungan, jumlah) values('$id_detail','$tanggal','$id_anggota','$jenis_tabungan','$jumlah')");
+    $sql = $koneksi->query("insert into detail (id_detail, tanggal, id_anggota, jenis_tabungan, jumlah) values('$id_detail','$tanggal','$id_anggota','$jenis_tabungan','$jumlah')");
 
-    // $hasil = $koneksi->query("SELECT email FROM anggota WHERE id = '$id_anggota'");
-    // $data = mysqli_fetch_assoc($hasil);
+    $hasil = $koneksi->query("SELECT email FROM anggota WHERE id = '$id_anggota'");
+    $data = mysqli_fetch_assoc($hasil);
+
+
+    require_once './vendor/autoload.php';
+
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+        ->setUsername('sedotppk@gmail.com')
+        ->setPassword('k1ll3rb33');
+
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+    // Create a message
+    $message = (new Swift_Message('Pemberitahuan dari Artha Bhaskara Mandiri'))
+        ->setFrom(['no-reply@artha-baskara-mandiri.com' => 'Artha Bhaskara Mandiri'])
+        ->setTo($data['email'])
+        // ->setBody('<p>Peminjaman Dana<p>')
+        ->addPart('<p>Anda telah menabung dana sebesar Rp. ' . number_format($jumlah) . '</p></br><p><strong>Artha Bhaskara Mandiri,</strong></p></br><p><strong>Terima Kasih</strong></p>', 'text/html');
+
+    // Send the message
+    $result = $mailer->send($message);
 ?>
     <script type="text/javascript">
-        let email = '<?= $data['email']; ?>';
-        let dana = '<?= $jumlah; ?>';
-        // console.log(email, dana);
-        try {
-            fetch('http://siodian.my.id/tabung/'+ email +'/' + dana).then(res => console.log(res));
-            alert("Data Berhasil Disimpan");
-            window.location.href = "?page=detail";
-        } catch (err) {
-            alert(err); // Failed to fetch
-        }
-        // fetch('http://siodian.my.id/tabung/hilmanhabibi13@gmail.com/300000').then(res => console.log(res));
-        // alert("Data Berhasil Disimpan");
-        // window.location.href = "?page=detail";
+        alert("Data Berhasil Disimpan");
+        window.location.href = "?page=detail";
     </script>
 <?php } ?>
